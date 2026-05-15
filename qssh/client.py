@@ -60,9 +60,7 @@ def start_agent() -> bool:
         creationflags = 0
         cwd = None
         if platform.system() == "Windows":
-            creationflags = (
-                subprocess.CREATE_NEW_CONSOLE | 0x08000000
-            )  # DETACHED_PROCESS
+            creationflags = 0x08000000  # DETACHED_PROCESS
             cwd = qssh_pkg
 
         subprocess.Popen(
