@@ -98,6 +98,11 @@ class PasswordAgent:
                 self.passwords[key] = value
             return "OK"
 
+        if cmd == "FLUSH":
+            with self.lock:
+                self.passwords.clear()
+            return "OK"
+
         return f"ERROR: unknown command {cmd}"
 
     def _idle_checker(self):
