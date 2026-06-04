@@ -2,3 +2,4 @@ nul
 qssh/__pycache__
 qssh-agent.pid
 *.egg-info
+qssh-deploy.zip
