@@ -213,8 +213,24 @@ def _run_ssh_windows(ssh_cmd: list[str], password: str):
         os.unlink(askpass_py.name)
 
 
-def run(target_arg: str, ssh_args: list[str]):
+def run_with_key(target: str, key_path: str, ssh_args: list[str]):
+    """Spawn ssh with a private key file (no password needed)."""
+    ssh_cmd = ["ssh", "-i", key_path, target] + ssh_args
+    proc = subprocess.run(ssh_cmd)
+    sys.exit(proc.returncode)
+
+
+def run(
+    target_arg: str,
+    ssh_args: list[str],
+    key_path: str | None = None,
+    no_cache: bool = False,
+):
     """Main client flow: ensure agent, get password, run ssh."""
+    if key_path:
+        run_with_key(target_arg, key_path, ssh_args)
+        return
+
     ensure_agent()
     password = prompt_password(target_arg)
     run_ssh(target_arg, password, ssh_args)

@@ -23,6 +23,17 @@ def main():
         action="store_true",
         help="Run the qssh-agent server (internal use)",
     )
+    parser.add_argument(
+        "-k",
+        "--key",
+        default=None,
+        help="Path to a private key file for SSH authentication",
+    )
+    parser.add_argument(
+        "--no-cache",
+        action="store_true",
+        help="Skip password caching (use with --key or for one-off password auth)",
+    )
 
     args = parser.parse_args()
 
@@ -33,7 +44,7 @@ def main():
     elif args.target:
         from .client import run
 
-        run(args.target, args.ssh_args)
+        run(args.target, args.ssh_args, key_path=args.key, no_cache=args.no_cache)
     else:
         parser.print_help()
         sys.exit(1)
